@@ -270,6 +270,7 @@
 import { ref, computed, onMounted } from "vue";
 import { debounce } from "lodash-es";
 import { useRouter } from "vue-router";
+import { getApiUrl, API_ROUTES } from "../config";
 
 const router = useRouter();
 
@@ -322,14 +323,17 @@ const searchNames = debounce(async (searchText, playerIndex) => {
 
   try {
     const response = await fetch(
-      `http://localhost:3000/api/search-names?q=${encodeURIComponent(
-        searchText
-      )}`
+      getApiUrl(API_ROUTES.SEARCH_NAMES) +
+        `?q=${encodeURIComponent(searchText)}`
     );
     if (response.ok) {
       const data = await response.json();
       suggestions.value = data;
-      players.value[playerIndex].showSuggestions = true;
+      if (playerIndex === -1) {
+        modifyPlayer.value.showSuggestions = true;
+      } else {
+        players.value[playerIndex].showSuggestions = true;
+      }
     }
   } catch (error) {
     console.error("搜索失败:", error);
@@ -483,7 +487,7 @@ const saveSettings = async () => {
       return;
     }
 
-    const response = await fetch("http://localhost:3000/api/settings", {
+    const response = await fetch(getApiUrl(API_ROUTES.SETTINGS), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -520,7 +524,7 @@ const getSettings = async () => {
       return;
     }
 
-    const response = await fetch("http://localhost:3000/api/settings", {
+    const response = await fetch(getApiUrl(API_ROUTES.SETTINGS), {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -533,8 +537,6 @@ const getSettings = async () => {
     } else if (response.status === 401) {
       alert("登录已过期，请重新登录");
       router.push("/login");
-    } else {
-      console.error("获取设置失败:", await response.text());
     }
   } catch (error) {
     console.error("获取设置失败:", error);

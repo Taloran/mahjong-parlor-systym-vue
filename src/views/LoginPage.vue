@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { getApiUrl, API_ROUTES } from "../config";
 
 const router = useRouter();
 const password = ref("");
@@ -12,7 +13,7 @@ const isInitialSetup = ref(false);
 // 检查是否需要初始化密码
 onMounted(async () => {
   try {
-    const response = await fetch("http://localhost:3000/api/check-init");
+    const response = await fetch(getApiUrl(API_ROUTES.CHECK_INIT));
     const data = await response.json();
     isInitialSetup.value = data.needInit;
   } catch (error) {
@@ -55,7 +56,7 @@ const initializePassword = async () => {
 
 const login = async () => {
   try {
-    const response = await fetch("http://localhost:3000/api/auth", {
+    const response = await fetch(getApiUrl(API_ROUTES.AUTH), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

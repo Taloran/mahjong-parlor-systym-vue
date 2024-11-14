@@ -1,25 +1,14 @@
 <script setup>
 import { ref, onMounted } from "vue";
+import { getApiUrl, API_ROUTES } from "../config";
 
 const tableData = ref([]);
-const sortOrder = ref("desc");
-
-const sortData = (data) => {
-  return data.sort((a, b) => {
-    return sortOrder.value === "desc" ? b.score - a.score : a.score - b.score;
-  });
-};
-
-const toggleSort = () => {
-  sortOrder.value = sortOrder.value === "desc" ? "asc" : "desc";
-  tableData.value = sortData([...tableData.value]);
-};
 
 onMounted(async () => {
   try {
-    const response = await fetch("http://localhost:3000/api/get-all");
+    const response = await fetch(getApiUrl(API_ROUTES.GET_ALL));
     const data = await response.json();
-    tableData.value = sortData(data);
+    tableData.value = data;
   } catch (error) {
     console.error("获取数据失败:", error);
   }
