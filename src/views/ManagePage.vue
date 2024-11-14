@@ -569,7 +569,7 @@ const confirmReset = async () => {
       return;
     }
 
-    const response = await fetch(getApiUrl(API_ROUTES.RESET_SCORE), {
+    const response = await fetch(getApiUrl(API_ROUTES.RESET_SCORES), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -581,10 +581,12 @@ const confirmReset = async () => {
     });
 
     if (response.ok) {
-      alert("所有分数已清零");
+      const data = await response.json();
+      alert(data.message || "所有分数已清零");
       closeResetDialog();
     } else if (response.status === 401) {
-      resetError.value = "密码错误";
+      const data = await response.json();
+      resetError.value = data.message || "密码错误";
     } else {
       const data = await response.json();
       resetError.value = data.message || "操作失败，请重试";
@@ -685,7 +687,7 @@ const confirmDelete = async () => {
       return;
     }
 
-    const response = await fetch(getApiUrl(API_ROUTES.DELETE_ALL_PLAYER), {
+    const response = await fetch(getApiUrl(API_ROUTES.DELETE_ALL_PLAYERS), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -697,10 +699,12 @@ const confirmDelete = async () => {
     });
 
     if (response.ok) {
-      alert("所有玩家数据已删除");
+      const data = await response.json();
+      alert(data.message || "所有玩家数据已删除");
       closeDeleteDialog();
     } else if (response.status === 401) {
-      deleteError.value = "密码错误";
+      const data = await response.json();
+      deleteError.value = data.message || "密码错误";
     } else {
       const data = await response.json();
       deleteError.value = data.message || "操作失败，请重试";
