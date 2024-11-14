@@ -1,4 +1,4 @@
-export const API_BASE_URL = "http://localhost:3000";
+export const API_BASE_URL = "https://udijcmhkgtez.sealoshzh.site:3000";
 
 // API 路径配置
 export const API_ROUTES = {
