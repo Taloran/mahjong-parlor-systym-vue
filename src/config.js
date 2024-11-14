@@ -1,4 +1,4 @@
-export const API_BASE_URL = "https://bqduzqqgheqr.sealoshzh.site:3000";
+export const API_BASE_URL = "https://qnzxhscykijs.sealoshzh.site";
 //私人后端
 
 // API 路径配置
