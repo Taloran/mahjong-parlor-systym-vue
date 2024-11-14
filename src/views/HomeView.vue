@@ -3,16 +3,32 @@ import { ref, onMounted } from "vue";
 import { getApiUrl, API_ROUTES } from "../config";
 
 const tableData = ref([]);
+const sortOrder = ref("desc");
 
-onMounted(async () => {
+// 获取并排序数据
+const fetchAndSortData = async () => {
   try {
     const response = await fetch(getApiUrl(API_ROUTES.GET_ALL));
     const data = await response.json();
-    tableData.value = data;
+    // 对数据进行排序
+    tableData.value = data.sort((a, b) => {
+      return sortOrder.value === "desc" ? b.score - a.score : a.score - b.score;
+    });
   } catch (error) {
     console.error("获取数据失败:", error);
   }
-});
+};
+
+// 切换排序方向
+const toggleSort = () => {
+  sortOrder.value = sortOrder.value === "desc" ? "asc" : "desc";
+  // 重新排序当前数据
+  tableData.value = tableData.value.sort((a, b) => {
+    return sortOrder.value === "desc" ? b.score - a.score : a.score - b.score;
+  });
+};
+
+onMounted(fetchAndSortData);
 </script>
 
 <template>
@@ -91,16 +107,15 @@ onMounted(async () => {
 .sortable {
   cursor: pointer;
   user-select: none;
-  position: relative;
-}
-
-.sortable:hover {
-  background-color: #c8c8c8;
 }
 
 .sort-icon {
   margin-left: 5px;
   display: inline-block;
+}
+
+.sortable:hover {
+  background-color: #e8e8e8;
 }
 
 /* 响应式设计 */
