@@ -393,20 +393,20 @@ const validateForm = () => {
 const getPlayerScore = async (name) => {
   try {
     const response = await fetch(
-      `http://localhost:3000/api/get-single?name=${encodeURIComponent(name)}`
+      getApiUrl(API_ROUTES.GET_SINGLE) + `?name=${encodeURIComponent(name)}`
     );
     const data = await response.json();
     return data.score;
   } catch (error) {
     console.error(`获取玩家 ${name} 分数失败:`, error);
-    return 0; // 如果获取失败，返回0分
+    return 0;
   }
 };
 
 // 更新玩家分数
 const updatePlayerScore = async (name, newScore) => {
   try {
-    const response = await fetch("http://localhost:3000/api/update", {
+    const response = await fetch(getApiUrl(API_ROUTES.UPDATE), {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -569,7 +569,7 @@ const confirmReset = async () => {
       return;
     }
 
-    const response = await fetch("http://localhost:3000/api/reset-scores", {
+    const response = await fetch(getApiUrl(API_ROUTES.RESET_SCORE), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -612,7 +612,7 @@ const closeChangePasswordDialog = () => {
   passwordError.value = "";
 };
 
-// 提交密码修改
+// 修改密码函数
 const submitPasswordChange = async () => {
   // 验证新密码
   if (
@@ -629,7 +629,8 @@ const submitPasswordChange = async () => {
 
   try {
     const token = localStorage.getItem("auth_token");
-    const response = await fetch("http://localhost:3000/api/change-password", {
+    const response = await fetch(getApiUrl(API_ROUTES.CHANGE_PASSWORD), {
+      // 修改这里
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -684,19 +685,16 @@ const confirmDelete = async () => {
       return;
     }
 
-    const response = await fetch(
-      "http://localhost:3000/api/delete-all-players",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          password: deletePassword.value,
-        }),
-      }
-    );
+    const response = await fetch(getApiUrl(API_ROUTES.DELETE_ALL_PLAYER), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        password: deletePassword.value,
+      }),
+    });
 
     if (response.ok) {
       alert("所有玩家数据已删除");
@@ -733,10 +731,9 @@ const selectModifyName = async (name) => {
   modifyPlayer.value.showSuggestions = false;
   suggestions.value = [];
 
-  // 获取当前分数
   try {
     const response = await fetch(
-      `http://localhost:3000/api/get-single?name=${encodeURIComponent(name)}`
+      getApiUrl(API_ROUTES.GET_SINGLE) + `?name=${encodeURIComponent(name)}`
     );
     const data = await response.json();
     modifyPlayer.value.score = data.score;
@@ -758,7 +755,8 @@ const submitModifyScore = async () => {
   }
 
   try {
-    const response = await fetch("http://localhost:3000/api/update", {
+    const response = await fetch(getApiUrl(API_ROUTES.UPDATE), {
+      // 修改这里
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
