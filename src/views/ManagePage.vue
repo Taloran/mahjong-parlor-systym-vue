@@ -427,13 +427,19 @@ const updatePlayerScore = async (name, newScore) => {
 };
 
 // 计算单个玩家的分数变动
+//失去精度问题待再次优化，先这样写吧hhh
 const calculateScoreChange = (gameScore, playerIndex) => {
-  // 对局分数除以10
-  const baseChange = gameScore / 10;
-  // 减去返点
-  const afterReturn = baseChange - returnPoint.value;
-  // 加上马点
-  const finalChange = afterReturn + horsePoints.value[playerIndex];
+  // 对局分数除以10，保留一位小数
+  const baseChange = Number((gameScore / 10).toFixed(1));
+
+  // 减去返点，保留一位小数
+  const afterReturn = Number((baseChange - returnPoint.value).toFixed(1));
+
+  // 加上马点，保留一位小数
+  const finalChange = Number(
+    (afterReturn + horsePoints.value[playerIndex]).toFixed(1)
+  );
+
   return finalChange;
 };
 
