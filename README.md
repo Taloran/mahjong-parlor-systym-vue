@@ -1,5 +1,37 @@
-# Vue 3 + Vite
+# 麻将积分管理系统
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+一个基于 Vue 3 的麻将积分管理系统，用于记录和管理麻将比赛的积分情况。
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+## 使用配置
+
+直接 git 然后在 config.js 配置后端服务器即可。
+
+## 功能介绍
+
+### 首页
+
+- 显示所有玩家分数排行榜
+- 支持点击分数列进行升序/降序排序
+
+### 管理页面
+
+- 新建对局
+
+  - 支持四位玩家同时输入
+  - 玩家名称支持自动补全
+  - 对局总分必须为 1000 分
+  - 自动计算玩家积分变动（对局分数/10 - 返点 + 马点）
+  - 最终分数保留一位小数
+
+- 分数计算设置
+
+  - 马点设置
+  - 返点设置
+    分数改变值 = 对局分数/10 - 返点 + 马点
+    （别问我为什么这么设计，你也可以自己改）
+
+- 管理功能
+
+  - 修改管理员密码
+  - 清零所有分数
+  - 删除所有玩家
