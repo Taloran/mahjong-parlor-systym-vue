@@ -1,4 +1,4 @@
-export const API_BASE_URL = "111.35.151.200";
+export const API_BASE_URL = "mjapi.yukino.io";
 
 // API 路径配置
 export const API_ROUTES = {
