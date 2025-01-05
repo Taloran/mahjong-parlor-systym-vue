@@ -1,4 +1,4 @@
-export const API_BASE_URL = "https://mjapi.yukino.io/";
+export const API_BASE_URL = "https://mjapi.yukino.io";
 
 // API 路径配置
 export const API_ROUTES = {
