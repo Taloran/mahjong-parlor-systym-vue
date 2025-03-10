@@ -10,10 +10,10 @@ const fetchAndSortData = async () => {
   try {
     const response = await fetch(getApiUrl(API_ROUTES.GET_ALL));
     const data = await response.json();
-    // 对数据进行排序
-    tableData.value = data.sort((a, b) => {
-      return sortOrder.value === "desc" ? b.score - a.score : a.score - b.score;
-    });
+
+    tableData.value = data
+      .filter(item => item.score !== 0) // 移除等于 0 的数据
+      .sort((a, b) => (sortOrder.value === "desc" ? b.score - a.score : a.score - b.score));
   } catch (error) {
     console.error("获取数据失败:", error);
   }
